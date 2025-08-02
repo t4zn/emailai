@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cold Email Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-envelope"></i> Cold Email Generator</h1>
+            <p>Generate personalized cold emails for job applications</p>
+        </header>
+
+        <main class="main-content">
+            <div class="form-container">
+                <form id="emailForm" class="email-form">
+                    <div class="form-section">
+                        <h2><i class="fas fa-user"></i> Personal Information</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required placeholder="e.g., Alexandra Chen">
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Current Role *</label>
+                                <input type="text" id="role" name="role" required placeholder="e.g., Senior Software Engineer">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="experience">Experience Summary *</label>
+                            <textarea id="experience" name="experience" required placeholder="e.g., 6+ years of experience leading development teams and architecting scalable solutions..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-code"></i> Skills & Projects</h2>
+                        <div class="form-group">
+                            <label for="skills">Skills (comma-separated) *</label>
+                            <input type="text" id="skills" name="skills" required placeholder="e.g., React, TypeScript, Node.js, Python, AWS">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="projects">Key Projects (one per line) *</label>
+                            <textarea id="projects" name="projects" required placeholder="e.g., Led development of microservices architecture serving 2M+ users&#10;Implemented ML-powered recommendation system increasing engagement by 40%"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-link"></i> Links & Portfolio</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="portfolioLink">Portfolio Link</label>
+                                <input type="url" id="portfolioLink" name="portfolioLink" placeholder="https://yourportfolio.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedinLink">LinkedIn Profile</label>
+                                <input type="url" id="linkedinLink" name="linkedinLink" placeholder="https://linkedin.com/in/yourprofile">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-building"></i> Target Company</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="companyName">Company Name *</label>
+                                <input type="text" id="companyName" name="companyName" required placeholder="e.g., Google">
+                            </div>
+                            <div class="form-group">
+                                <label for="targetRole">Target Role *</label>
+                                <input type="text" id="targetRole" name="targetRole" required placeholder="e.g., Senior Software Engineer">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recruiterName">Recruiter Name (optional)</label>
+                            <input type="text" id="recruiterName" name="recruiterName" placeholder="e.g., Michael Rodriguez">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2><i class="fas fa-sliders-h"></i> Email Settings</h2>
+                        <div class="form-group">
+                            <label for="tone">Email Tone *</label>
+                            <select id="tone" name="tone" required>
+                                <option value="professional">Professional</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="direct">Direct</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="loadSample" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Load Sample Data
+                        </button>
+                        <button type="submit" id="generateBtn" class="btn btn-primary">
+                            <i class="fas fa-magic"></i> Generate Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <div class="result-header">
+                    <h2><i class="fas fa-envelope-open"></i> Generated Email</h2>
+                    <button id="copyBtn" class="btn btn-secondary">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="email-preview" id="emailPreview">
+                    <div class="email-header">
+                        <div class="email-subject" id="emailSubject">Subject: [Generated Subject]</div>
+                        <div class="email-meta">
+                            <span>To: [Recruiter Name]</span>
+                            <span>From: [Your Name]</span>
+                        </div>
+                    </div>
+                    <div class="email-body" id="emailBody">
+                        <p>Your generated email will appear here...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Generating your email...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
