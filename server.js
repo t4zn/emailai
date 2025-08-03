@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { generateColdEmail, generateMultipleEmails } from './dist/generateEmail.js';
+import { generateColdEmail } from './dist/generateEmail.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -29,18 +29,6 @@ app.post('/api/generate-email', async (req, res) => {
     } catch (error) {
         console.error('Error generating email:', error);
         res.status(500).json({ error: error.message || 'Failed to generate email' });
-    }
-});
-
-// API endpoint to generate multiple email variations
-app.post('/api/generate-multiple-emails', async (req, res) => {
-    try {
-        const { formData, count = 3 } = req.body;
-        const emails = await generateMultipleEmails(formData, { provider: 'groq' }, count);
-        res.json({ emails });
-    } catch (error) {
-        console.error('Error generating multiple emails:', error);
-        res.status(500).json({ error: error.message || 'Failed to generate emails' });
     }
 });
 
