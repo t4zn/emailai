@@ -1,8 +1,8 @@
 {
   "name": "cold-email-generator",
   "version": "1.0.0",
-  "description": "AI-powered cold email generator using DeepSeek LLM",
-  "main": "generate.js",
+  "description": "AI-powered cold email generator using Groq LLM",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
     "cold-email",
     "ai",
     "llm",
-    "deepseek",
+    "groq",
     "recruitment"
   ],
   "author": "Your Name",
