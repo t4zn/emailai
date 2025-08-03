@@ -153,65 +153,40 @@ async function generateEmail(formData) {
         return result.email;
     } catch (error) {
         console.error('API Error:', error);
-        // Fallback to simulation if API fails
-        return await simulateEmailGeneration(formData);
+        throw new Error('Failed to generate email. Please check your API configuration and try again.');
     }
-}
-
-async function simulateEmailGeneration(formData) {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Generate a sample email based on the form data
-    const subject = `Application for ${formData.targetRole} Position at ${formData.companyName}`;
-    
-    const greeting = formData.recruiterName 
-        ? `Dear ${formData.recruiterName},`
-        : `Dear Hiring Manager,`;
-    
-    const intro = `I hope this email finds you well. I am writing to express my strong interest in the ${formData.targetRole} position at ${formData.companyName}. With ${formData.experience}, I believe I would be an excellent fit for your team.`;
-    
-    const skillsSection = `My technical expertise includes ${formData.skills.slice(0, 5).join(', ')}, and I have successfully delivered impactful projects such as:`;
-    
-    const projectsList = formData.projects.map(project => `• ${project}`).join('\n');
-    
-    const closing = `I am particularly excited about the opportunity to contribute to ${formData.companyName}'s innovative work and would welcome the chance to discuss how my background, technical skills, and passion for excellence can benefit your team.`;
-    
-    const signature = `Thank you for considering my application. I look forward to the possibility of speaking with you soon.
-
-Best regards,
-${formData.name}
-${formData.role}`;
-
-    const links = [];
-    if (formData.portfolioLink) {
-        links.push(`Portfolio: ${formData.portfolioLink}`);
-    }
-    if (formData.linkedinLink) {
-        links.push(`LinkedIn: ${formData.linkedinLink}`);
-    }
-    
-    const linksSection = links.length > 0 ? `\n\nAdditional Links:\n${links.join('\n')}` : '';
-    
-    return {
-        subject: subject,
-        body: `${greeting}
-
-${intro}
-
-${skillsSection}
-${projectsList}
-
-${closing}
-
-${signature}${linksSection}`
-    };
 }
 
 function displayEmail(emailContent, formData) {
+    // Handle different email content formats
+    let subject, body;
+    
+    if (typeof emailContent === 'string') {
+        // If it's a single string, try to extract subject and body
+        const lines = emailContent.split('\n');
+        const subjectLine = lines.find(line => line.toLowerCase().startsWith('subject:'));
+        
+        if (subjectLine) {
+            subject = subjectLine.replace(/^subject:\s*/i, '').trim();
+            body = lines.filter(line => !line.toLowerCase().startsWith('subject:')).join('\n').trim();
+        } else {
+            // If no subject line found, use the first line as subject and rest as body
+            subject = lines[0] || 'AI Generated Email';
+            body = lines.slice(1).join('\n').trim();
+        }
+    } else if (emailContent.subject && emailContent.body) {
+        // If it's an object with subject and body
+        subject = emailContent.subject;
+        body = emailContent.body;
+    } else {
+        // Fallback
+        subject = 'AI Generated Email';
+        body = emailContent.toString();
+    }
+    
     // Update email preview
-    emailSubject.textContent = `Subject: ${emailContent.subject}`;
-    emailBody.innerHTML = emailContent.body.replace(/\n/g, '<br>');
+    emailSubject.textContent = `Subject: ${subject}`;
+    emailBody.innerHTML = body.replace(/\n/g, '<br>');
     
     // Update email meta
     const emailMeta = document.querySelector('.email-meta');
