@@ -2,54 +2,37 @@ import { EmailInput } from './types';
 
 export function buildPrompt(user: EmailInput): string {
   return `
-You are an expert HR communication specialist. Write a professional cold email from a job applicant to HR/recruiter following top-tier company standards.
+You are an expert career coach and professional writer helping job applicants craft personalized, compelling cold emails. Your task is to create a unique, engaging email that stands out while maintaining professionalism.
 
-Write a compelling cold email using these details:
-
-APPLICANT PROFILE:
+**Applicant Information:**
 - Name: ${user.name}
-- Current Position: ${user.role}
-- Core Competencies: ${user.skills.join(', ')}
-- Professional Background: ${user.experience}
-- Key Achievements: ${user.projects.join(', ')}
-- Professional Links: Portfolio: ${user.portfolioLink || 'Available upon request'}, LinkedIn: ${user.linkedinLink || 'Available upon request'}
+- Current Role: ${user.role}
+- Key Skills: ${user.skills.join(', ')}
+- Professional Experience: ${user.experience}
+- Notable Achievements: ${user.projects.join('; ')}
+- Portfolio: ${user.portfolioLink || 'Not provided'}
+- LinkedIn: ${user.linkedinLink || 'Not provided'}
 
-TARGET OPPORTUNITY:
+**Target Position:**
 - Company: ${user.companyName}
-- Position of Interest: ${user.targetRole}
-- Contact: ${user.recruiterName || 'Hiring Manager'}
-- Communication Style: ${user.tone || 'professional'}
+- Role: ${user.targetRole}
+- Recipient: ${user.recruiterName || 'Hiring Manager'}
+- Tone: ${user.tone || 'professional yet conversational'}
 
-EMAIL REQUIREMENTS:
-- Use formal business email format
-- Write in first person (applicant perspective)
-- Subject line: Clear, professional, and specific to the role
-- Opening: Professional greeting with recipient's name
-- Introduction: Brief professional background and interest in the company
-- Body: Highlight relevant skills, experience, and achievements that align with the role
-- Value Proposition: Explain how your background can contribute to the company's success
-- Call to Action: Professional request for further discussion
-- Closing: Formal business closing with full name
-- Tone: Confident, professional, and enthusiastic without being overly casual
-- Length: Concise but comprehensive (150-200 words)
-- Focus: Demonstrate understanding of the company and role requirements
+**Instructions:**
+1. Create a completely original email that doesn't follow a template
+2. Make it sound natural and human-written, not AI-generated
+3. Show genuine interest in the company and role
+4. Highlight 1-2 key achievements that are most relevant to the target role
+5. Include a specific detail about ${user.companyName} that shows you've researched them
+6. Keep it concise (125-175 words)
+7. Use a professional but approachable tone
+8. End with a clear call-to-action
+9. Avoid generic phrases like "I'm excited to apply" - be specific about why you're interested
+10. Don't use placeholders - fill in all details based on the information provided
 
-FORMAT:
-Subject: [Professional Subject Line]
+**Important:** Do not use any template structures or placeholders. The email should flow naturally as if written by a human professional. Focus on creating a personal connection and demonstrating value rather than listing qualifications.
 
-Dear [Recruiter Name],
-
-[Professional introduction and interest in the company]
-
-[Relevant background and skills that match the role]
-
-[Value proposition and achievements]
-
-[Professional call to action]
-
-Best regards,
-[Full Name]
-
-Return only the email text with proper formatting (no code, markdown, or JSON).
+Return only the email content with proper formatting (no code blocks, markdown, or JSON). Include a subject line at the top.
 `;
-} 
+}
