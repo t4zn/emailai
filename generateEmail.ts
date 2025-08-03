@@ -16,8 +16,11 @@ async function callGroq(prompt: string, apiKey: string, model: string = 'llama3-
           content: prompt
         }
       ],
-      max_tokens: 500,
-      temperature: 0.7,
+      max_tokens: 800,
+      temperature: 0.9,
+      top_p: 0.95,
+      frequency_penalty: 0.3,
+      presence_penalty: 0.2,
       stream: false
     })
   });
@@ -46,4 +49,25 @@ export async function generateColdEmail(userData: EmailInput, aiConfig: AIConfig
     console.error('Error generating email:', error);
     return `Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`;
   }
+}
+
+export async function generateMultipleEmails(userData: EmailInput, aiConfig: AIConfig, count: number = 3): Promise<string[]> {
+  const emails: string[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    try {
+      const email = await generateColdEmail(userData, aiConfig);
+      emails.push(email);
+      
+      // Add a small delay between requests to ensure variety
+      if (i < count - 1) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    } catch (error) {
+      console.error(`Error generating email ${i + 1}:`, error);
+      emails.push(`Error generating email ${i + 1}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+  
+  return emails;
 } 

@@ -2,6 +2,7 @@
 const emailForm = document.getElementById('emailForm');
 const loadSampleBtn = document.getElementById('loadSample');
 const generateBtn = document.getElementById('generateBtn');
+const generateMultipleBtn = document.getElementById('generateMultipleBtn');
 const resultContainer = document.getElementById('resultContainer');
 const emailSubject = document.getElementById('emailSubject');
 const emailBody = document.getElementById('emailBody');
@@ -70,6 +71,39 @@ emailForm.addEventListener('submit', async (e) => {
     } catch (error) {
         console.error('Error generating email:', error);
         showNotification('Error generating email. Please try again.', 'error');
+    } finally {
+        showLoading(false);
+    }
+});
+
+// Generate multiple email variations
+generateMultipleBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!validateForm()) {
+        return;
+    }
+
+    // Show loading
+    showLoading(true);
+    
+    try {
+        // Collect form data
+        const formData = collectFormData();
+        
+        // Generate multiple emails
+        const emails = await generateMultipleEmails(formData);
+        
+        // Display multiple results
+        displayMultipleEmails(emails, formData);
+        
+        // Show success feedback
+        showNotification('Multiple email variations generated!', 'success');
+        
+    } catch (error) {
+        console.error('Error generating multiple emails:', error);
+        showNotification('Error generating multiple emails. Please try again.', 'error');
     } finally {
         showLoading(false);
     }
@@ -208,6 +242,29 @@ ${signature}${linksSection}`
     };
 }
 
+async function generateMultipleEmails(formData) {
+    try {
+        const response = await fetch('/api/generate-multiple-emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ formData, count: 3 })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to generate multiple emails');
+        }
+
+        const result = await response.json();
+        return result.emails;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+
 function displayEmail(emailContent, formData) {
     // Update email preview
     emailSubject.textContent = `Subject: ${emailContent.subject}`;
@@ -222,6 +279,58 @@ function displayEmail(emailContent, formData) {
     
     // Show result container
     resultContainer.style.display = 'block';
+    
+    // Scroll to result
+    resultContainer.scrollIntoView({ behavior: 'smooth' });
+}
+
+function displayMultipleEmails(emails, formData) {
+    // Create a new container for multiple emails
+    const multipleContainer = document.createElement('div');
+    multipleContainer.className = 'multiple-emails-container';
+    multipleContainer.innerHTML = `
+        <div class="multiple-emails-header">
+            <h3>Multiple Email Variations</h3>
+            <p>Each email is uniquely generated - no templates, no placeholders!</p>
+        </div>
+        <div class="emails-grid">
+            ${emails.map((email, index) => `
+                <div class="email-variation">
+                    <div class="email-variation-header">
+                        <h4>Variation ${index + 1}</h4>
+                        <button class="copy-variation-btn" data-index="${index}">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="email-variation-content">
+                        <div class="email-subject">${email.split('\n')[0]}</div>
+                        <div class="email-body">${email.split('\n').slice(1).join('<br>')}</div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    // Replace the existing result container content
+    resultContainer.innerHTML = '';
+    resultContainer.appendChild(multipleContainer);
+    resultContainer.style.display = 'block';
+    
+    // Add event listeners for copy buttons
+    multipleContainer.querySelectorAll('.copy-variation-btn').forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            const emailText = emails[index];
+            navigator.clipboard.writeText(emailText).then(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copy-success');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    btn.classList.remove('copy-success');
+                }, 2000);
+                showNotification('Email variation copied!', 'success');
+            });
+        });
+    });
     
     // Scroll to result
     resultContainer.scrollIntoView({ behavior: 'smooth' });

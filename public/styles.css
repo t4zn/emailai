@@ -188,6 +188,127 @@ body {
     border-color: #cbd5e0;
 }
 
+.btn-success {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+/* Multiple emails container */
+.multiple-emails-container {
+    width: 100%;
+}
+
+.multiple-emails-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.multiple-emails-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.multiple-emails-header p {
+    color: #718096;
+    font-size: 1rem;
+}
+
+.emails-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .emails-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.email-variation {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.email-variation:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.email-variation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.email-variation-header h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.copy-variation-btn {
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.copy-variation-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-1px);
+}
+
+.copy-variation-btn.copy-success {
+    background: #48bb78;
+}
+
+.email-variation-content {
+    line-height: 1.7;
+}
+
+.email-variation-content .email-subject {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.email-variation-content .email-body {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
 /* Result container */
 .result-container {
     background: white;
@@ -323,6 +444,24 @@ body {
     }
     
     .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Responsive design for multiple emails */
+@media (max-width: 480px) {
+    .email-variation {
+        padding: 15px;
+    }
+    
+    .email-variation-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .copy-variation-btn {
         width: 100%;
         justify-content: center;
     }
